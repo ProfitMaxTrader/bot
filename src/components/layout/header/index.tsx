@@ -70,7 +70,7 @@ const Header = () => {
                 {!isAuthorized ? (
                     <>
                         <a
-                            href='https://oauth.deriv.com/oauth2/authorize?app_id=70082&scope=admin,read,trade,trading_information&redirect_uri=https://profitmaxtrader.com/verify'
+                            href='https://oauth.deriv.com/oauth2/authorize?app_id=70082&scope=read,trade,trading_information&redirect_uri=https://bots.profitmaxtrader.com/verify'
                             style={{
                                 border: '2px solid #ff444f',
                                 color: '#ff444f',
