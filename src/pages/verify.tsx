@@ -1,39 +1,41 @@
 import { useEffect } from 'react';
+import { useLocation,useNavigate } from 'react-router-dom';
 
 const Verify = () => {
+    const navigate = useNavigate();
+    const location = useLocation();
+
     useEffect(() => {
-        console.log('✅ /verify page loaded.');
-        console.log('🔍 Current URL:', window.location.href);
+        const urlParams = new URLSearchParams(location.search);
+        const code = urlParams.get('code');
 
-        const urlParams = new URLSearchParams(window.location.search);
-        const tokens: string[] = [];
+        if (!code) {
+            console.error('No code found in URL');
+            return;
+        }
 
-        // Collect tokens (supporting multiple accounts)
-        for (let i = 1; i <= 3; i++) {
-            const token = urlParams.get(`token${i}`);
-            if (token) {
-                console.log(`✅ Found token${i}:`, token);
-                tokens.push(token);
+        const ws = new WebSocket('wss://ws.derivws.com/websockets/v3');
+
+        ws.onopen = () => {
+            ws.send(JSON.stringify({ authorize: code }));
+        };
+
+        ws.onmessage = msg => {
+            const data = JSON.parse(msg.data);
+
+            if (data.error) {
+                console.error('Authorization error:', data.error);
+            } else if (data.msg_type === 'authorize') {
+                // Save token and reload or redirect
+                localStorage.setItem('auth_token', data.echo_req.authorize);
+                navigate('/', { replace: true }); // or /dashboard
             }
-        }
 
-        if (tokens.length > 0) {
-            // Save the first token to localStorage
-            localStorage.setItem('auth_token', tokens[0]);
-            console.log('💾 Stored auth_token in localStorage.');
-            // Redirect to homepage where the auth hook can pick it up
-            window.location.href = '/';
-        } else {
-            console.error('❌ No tokens found in URL.');
-        }
-    }, []);
+            ws.close();
+        };
+    }, [location, navigate]);
 
-    return (
-        <div style={{ padding: '2rem', textAlign: 'center' }}>
-            <h2>🔄 Processing login...</h2>
-            <p>Check console logs for token status.</p>
-        </div>
-    );
+    return <div>Verifying your login, please wait...</div>;
 };
 
 export default Verify;
