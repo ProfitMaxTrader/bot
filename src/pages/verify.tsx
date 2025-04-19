@@ -1,41 +1,45 @@
 import { useEffect } from 'react';
-import { useLocation,useNavigate } from 'react-router-dom';
 
 const Verify = () => {
-    const navigate = useNavigate();
-    const location = useLocation();
-
     useEffect(() => {
-        const urlParams = new URLSearchParams(location.search);
-        const code = urlParams.get('code');
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token1');
 
-        if (!code) {
-            console.error('No code found in URL');
-            return;
+        if (token) {
+            // Save to localStorage for global access
+            localStorage.setItem('auth_token', token);
+
+            // Connect to Deriv WebSocket and send authorize call
+            const socket = new WebSocket('wss://ws.derivws.com/websockets/v3?app_id=70082');
+
+            socket.onopen = () => {
+                socket.send(JSON.stringify({ authorize: token }));
+            };
+
+            socket.onmessage = event => {
+                const data = JSON.parse(event.data);
+                if (data.msg_type === 'authorize') {
+                    console.log('✅ Logged in as:', data.authorize.loginid);
+                    // Redirect to homepage
+                    window.location.href = '/';
+                } else if (data.error) {
+                    console.error('❌ Authorization error:', data.error.message);
+                }
+            };
+
+            socket.onerror = err => {
+                console.error('❌ WebSocket error:', err);
+            };
+        } else {
+            console.error('❌ No token found in URL');
         }
+    }, []);
 
-        const ws = new WebSocket('wss://ws.derivws.com/websockets/v3');
-
-        ws.onopen = () => {
-            ws.send(JSON.stringify({ authorize: code }));
-        };
-
-        ws.onmessage = msg => {
-            const data = JSON.parse(msg.data);
-
-            if (data.error) {
-                console.error('Authorization error:', data.error);
-            } else if (data.msg_type === 'authorize') {
-                // Save token and reload or redirect
-                localStorage.setItem('auth_token', data.echo_req.authorize);
-                navigate('/', { replace: true }); // or /dashboard
-            }
-
-            ws.close();
-        };
-    }, [location, navigate]);
-
-    return <div>Verifying your login, please wait...</div>;
+    return (
+        <div style={{ padding: '2rem', textAlign: 'center' }}>
+            <h2>🔄 Logging you in...</h2>
+        </div>
+    );
 };
 
 export default Verify;
