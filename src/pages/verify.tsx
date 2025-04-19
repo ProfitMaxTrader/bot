@@ -1,45 +1,36 @@
-import { useEffect } from 'react';
+import { Fragment } from 'react/jsx-runtime';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { AppDataProvider } from '@deriv-com/api-hooks';
+import { initializeI18n, TranslationProvider } from '@deriv-com/translations';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import Layout from '../components/layout';
+import { StoreProvider } from '../hooks/useStore';
+import AppContent from './app-content';
 
-const Verify = () => {
-    useEffect(() => {
-        const urlParams = new URLSearchParams(window.location.search);
-        const token = urlParams.get('token1');
+const queryClient = new QueryClient();
+const i18nInstance = initializeI18n({ cdnUrl: 'https://cdn.example.com' });
 
-        if (token) {
-            // Save to localStorage for global access
-            localStorage.setItem('auth_token', token);
+// ✅ Read token from localStorage for login session
+const authToken = localStorage.getItem('auth_token') || undefined;
 
-            // Connect to Deriv WebSocket and send authorize call
-            const socket = new WebSocket('wss://ws.derivws.com/websockets/v3?app_id=70082');
-
-            socket.onopen = () => {
-                socket.send(JSON.stringify({ authorize: token }));
-            };
-
-            socket.onmessage = event => {
-                const data = JSON.parse(event.data);
-                if (data.msg_type === 'authorize') {
-                    console.log('✅ Logged in as:', data.authorize.loginid);
-                    // Redirect to homepage
-                    window.location.href = '/';
-                } else if (data.error) {
-                    console.error('❌ Authorization error:', data.error.message);
-                }
-            };
-
-            socket.onerror = err => {
-                console.error('❌ WebSocket error:', err);
-            };
-        } else {
-            console.error('❌ No token found in URL');
-        }
-    }, []);
-
+function App() {
     return (
-        <div style={{ padding: '2rem', textAlign: 'center' }}>
-            <h2>🔄 Logging you in...</h2>
-        </div>
+        <Fragment>
+            <Router>
+                <QueryClientProvider client={queryClient}>
+                    <TranslationProvider defaultLang={'EN'} i18nInstance={i18nInstance}>
+                        <AppDataProvider initialAuthToken={authToken}>
+                            <StoreProvider>
+                                <Layout>
+                                    <AppContent />
+                                </Layout>
+                            </StoreProvider>
+                        </AppDataProvider>
+                    </TranslationProvider>
+                </QueryClientProvider>
+            </Router>
+        </Fragment>
     );
-};
+}
 
-export default Verify;
+export default App;
