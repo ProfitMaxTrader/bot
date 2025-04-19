@@ -1,78 +1,123 @@
-import { useActiveAccount } from '@/hooks/api/account';
-import { StandaloneCircleUserRegularIcon } from '@deriv/quill-icons';
+import React from 'react';
 import { useAuthData } from '@deriv-com/api-hooks';
-import { useTranslations } from '@deriv-com/translations';
-import { Button, Header, Text, useDevice, Wrapper } from '@deriv-com/ui';
-import { URLUtils } from '@deriv-com/utils';
-import { AppLogo } from '../app-logo';
-import { MenuItems } from './MenuItems';
-import { MobileMenu } from './MobileMenu';
-import { PlatformSwitcher } from './PlatformSwitcher';
-// import { AccountsInfoLoader } from './SkeletonLoader';
-import './header.scss';
 
-const AppHeader = () => {
-    const { isDesktop } = useDevice();
-    const { activeLoginid, logout, isAuthorized } = useAuthData();
-    const { data: activeAccount } = useActiveAccount();
-    const { localize } = useTranslations();
-    const { getOauthURL } = URLUtils;
-
-    const renderAccountSection = () => {
-        if (!activeAccount || !isAuthorized) {
-            return (
-                <Button
-                    size='sm'
-                    variant='outlined'
-                    color='primary-light'
-                    onClick={() => {
-                        window.location.href = getOauthURL();
-                    }}
-                >
-                    Login
-                </Button>
-            );
-        }
-
-        if (activeLoginid) {
-            return (
-                <>
-                    {/* <Notifications /> */}
-                    {isDesktop && (
-                        // <TooltipMenuIcon
-                        //     as='a'
-                        //     className='pr-3 border-r-[0.1rem] h-[3.2rem]'
-                        //     disableHover
-                        //     href='https://app.deriv.com/account/personal-details'
-                        //     tooltipContent={localize('Manage account settings')}
-                        //     tooltipPosition='bottom'
-                        // >
-                        <StandaloneCircleUserRegularIcon />
-                        // </TooltipMenuIcon>
-                    )}
-                    {/* <AccountsInfoLoader isLoggedIn isMobile={!isDesktop} speed={3} /> */}
-                    {/* <AccountSwitcher account={activeAccount!} /> */}
-                    <Button className='mr-6' onClick={logout} size='md'>
-                        <Text size='sm' weight='bold'>
-                            {localize('Logout')}
-                        </Text>
-                    </Button>
-                </>
-            );
-        }
-    };
+const Header = () => {
+    const { isAuthorized, logout } = useAuthData();
 
     return (
-        <Header className={!isDesktop ? 'h-[40px]' : ''}>
-            <Wrapper variant='left'>
-                <AppLogo />
-                <MobileMenu />
-                {isDesktop && <PlatformSwitcher />}
-                {isDesktop && <MenuItems />}
-            </Wrapper>
-            <Wrapper variant='right'>{renderAccountSection()}</Wrapper>
-        </Header>
+        <div
+            style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                padding: '0.75rem 1.5rem',
+                backgroundColor: '#ffffff',
+                borderBottom: '1px solid #e2e8f0',
+                color: '#0f172a',
+                fontSize: '16px',
+            }}
+        >
+            {/* Left: Logo + Divider + Buttons */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+                <img src='/assets/logo.png' alt='ProfitMax Logo' style={{ height: '56px', objectFit: 'contain' }} />
+                {/* Vertical Divider */}
+                <div style={{ height: '32px', width: '1px', backgroundColor: '#ccc' }} />
+                <a
+                    href='https://t.me/ProfitMaxTraderHub'
+                    target='_blank'
+                    rel='noopener noreferrer'
+                    style={{
+                        backgroundColor: '#0088cc',
+                        color: 'white',
+                        padding: '4px 10px',
+                        borderRadius: '5px',
+                        textDecoration: 'none',
+                        fontWeight: '600',
+                        fontSize: '14px',
+                    }}
+                >
+                    Telegram
+                </a>
+                <a
+                    href='https://dm-pay.africa/'
+                    target='_blank'
+                    rel='noopener noreferrer'
+                    style={{
+                        backgroundColor: '#28a745',
+                        color: 'white',
+                        padding: '4px 10px',
+                        borderRadius: '5px',
+                        textDecoration: 'none',
+                        fontWeight: '600',
+                        fontSize: '14px',
+                    }}
+                >
+                    deposit/withdraw
+                </a>
+            </div>
+
+            {/* Center: Powered by Deriv */}
+            <div style={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
+                <img
+                    src='/assets/poweredbyderiv.png'
+                    alt='Powered by Deriv'
+                    style={{ height: '40px', objectFit: 'contain' }}
+                />
+            </div>
+
+            {/* Right: Login/Signup or Logout */}
+            <div style={{ display: 'flex', gap: '14px' }}>
+                {!isAuthorized ? (
+                    <>
+                        <a
+                            href='https://oauth.deriv.com/oauth2/authorize?app_id=70082&scope=admin,read,trade,trading_information&redirect_uri=https://profitmaxtrader.com/verify'
+                            style={{
+                                border: '2px solid #ff444f',
+                                color: '#ff444f',
+                                padding: '8px 16px',
+                                borderRadius: '6px',
+                                textDecoration: 'none',
+                                fontWeight: '700',
+                                fontSize: '15px',
+                            }}
+                        >
+                            Login
+                        </a>
+                        <a
+                            href='https://track.deriv.com/_71lZpQSowCcKqFKZ7JdnQ2Nd7ZgqdRLk/1/'
+                            style={{
+                                border: '2px solid #ff444f',
+                                color: '#ff444f',
+                                padding: '8px 16px',
+                                borderRadius: '6px',
+                                textDecoration: 'none',
+                                fontWeight: '700',
+                                fontSize: '15px',
+                            }}
+                        >
+                            Sign Up
+                        </a>
+                    </>
+                ) : (
+                    <button
+                        onClick={logout}
+                        style={{
+                            border: '2px solid #ff444f',
+                            backgroundColor: '#ff444f',
+                            color: 'white',
+                            padding: '8px 16px',
+                            borderRadius: '6px',
+                            fontWeight: '700',
+                            fontSize: '15px',
+                            cursor: 'pointer',
+                        }}
+                    >
+                        Logout
+                    </button>
+                )}
+            </div>
+        </div>
     );
 };
 
-export default AppHeader;
+export default Header;

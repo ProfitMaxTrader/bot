@@ -18,7 +18,7 @@
     },
     "dependencies": {
         "@deriv-com/analytics": "^1.5.3",
-        "@deriv-com/api-hooks": "^1.1.1",
+        "@deriv-com/api-hooks": "^1.7.1",
         "@deriv-com/translations": "^1.2.4",
         "@deriv-com/ui": "^1.29.0",
         "@deriv-com/utils": "latest",
