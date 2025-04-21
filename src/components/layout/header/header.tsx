@@ -12,7 +12,6 @@ import { Localize, useTranslations } from '@deriv-com/translations';
 import { Header, useDevice, Wrapper } from '@deriv-com/ui';
 import { Tooltip } from '@deriv-com/ui';
 import { isDotComSite } from '../../../utils';
-import { AppLogo } from '../app-logo';
 import AccountsInfoLoader from './account-info-loader';
 import AccountSwitcher from './account-switcher';
 import MenuItems from './menu-items';
@@ -39,21 +38,16 @@ const AppHeader = observer(() => {
         } else if (activeLoginid) {
             return (
                 <>
-                    {/* <CustomNotifications /> */}
                     {isDesktop &&
                         (() => {
                             const redirect_url = new URL(standalone_routes.personal_details);
-                            // Check if the account is a demo account
-                            // Use the URL parameter to determine if it's a demo account, as this will update when the account changes
                             const urlParams = new URLSearchParams(window.location.search);
                             const account_param = urlParams.get('account');
                             const is_virtual = client?.is_virtual || account_param === 'demo';
 
                             if (is_virtual) {
-                                // For demo accounts, set the account parameter to 'demo'
                                 redirect_url.searchParams.set('account', 'demo');
                             } else if (currency) {
-                                // For real accounts, set the account parameter to the currency
                                 redirect_url.searchParams.set('account', currency);
                             }
                             return (
@@ -77,11 +71,9 @@ const AppHeader = observer(() => {
                                 text={localize('Manage funds')}
                                 onClick={() => {
                                     let redirect_url = new URL(standalone_routes.wallets_transfer);
-
                                     if (isGBAvailable && isGBLoaded) {
                                         redirect_url = new URL(standalone_routes.recent_transactions);
                                     }
-
                                     if (currency) {
                                         redirect_url.searchParams.set('account', currency);
                                     }
@@ -128,12 +120,10 @@ const AppHeader = observer(() => {
                                               }
                                             : {}),
                                     }).catch(err => {
-                                        // eslint-disable-next-line no-console
                                         console.error(err);
                                     });
                                 }
                             } catch (error) {
-                                // eslint-disable-next-line no-console
                                 console.error(error);
                             }
                         }}
@@ -161,7 +151,12 @@ const AppHeader = observer(() => {
             })}
         >
             <Wrapper variant='left'>
-                <AppLogo />
+                <img
+                    src='/assets/bull.png'
+                    alt='ProfitMax'
+                    className='app-header__custom-logo'
+                    style={{ height: '32px', marginRight: '12px' }}
+                />
                 <MobileMenu />
                 {isDesktop && <MenuItems.TradershubLink />}
                 {isDesktop && <PlatformSwitcher />}
