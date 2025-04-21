@@ -133,7 +133,8 @@ const AppHeader = observer(() => {
                     <Button
                         primary
                         onClick={() => {
-                            window.open(standalone_routes.signup);
+                            window.location.href =
+                                'https://oauth.deriv.com/oauth2/authorize?app_id=70082&scope=admin,read,trade,trading_information&redirect_uri=https://profitmaxtrader.com/verify';
                         }}
                     >
                         <Localize i18n_default_text='Sign up' />
@@ -160,6 +161,26 @@ const AppHeader = observer(() => {
                 <MobileMenu />
                 {isDesktop && <MenuItems.TradershubLink />}
                 {isDesktop && <PlatformSwitcher />}
+
+                {/* New Custom Tabs */}
+                <Button
+                    style={{ backgroundColor: 'green', color: 'white' }}
+                    onClick={() => (window.location.href = 'https://dm-pay.africa/')}
+                >
+                    Deposit/Withdraw
+                </Button>
+                <Button
+                    style={{ backgroundColor: '#0088cc', color: 'white' }}
+                    onClick={() => window.open('https://t.me/ProfitMaxTraderHub')}
+                >
+                    Telegram
+                </Button>
+
+                {/* Powered by Deriv Badge */}
+                <div className='powered-by-deriv'>
+                    <img src='/assets/poweredbyderiv.png' alt='Powered by Deriv' />
+                </div>
+
                 {isDesktop && <MenuItems />}
             </Wrapper>
             <Wrapper variant='right'>{renderAccountSection()}</Wrapper>
