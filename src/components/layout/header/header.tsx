@@ -151,27 +151,49 @@ const AppHeader = observer(() => {
                 <MobileMenu />
                 {isDesktop && <MenuItems.TradershubLink />}
                 {isDesktop && <PlatformSwitcher />}
-                {isDesktop && (
-                    <Button
-                        style={{
-                            backgroundColor: '#0088cc',
-                            color: 'white',
-                            height: '40px',
-                            fontSize: '14px',
-                            padding: '0 16px',
-                            marginLeft: '16px',
-                        }}
-                        onClick={() => window.open('https://t.me/ProfitMaxTraderHub')}
-                    >
-                        Telegram
-                    </Button>
-                )}
+                <div className='telegram-button'>
+                    {isDesktop && (
+                        <Button
+                            style={{
+                                backgroundColor: '#0088cc',
+                                color: 'white',
+                                height: '32px',
+                                fontSize: '12px',
+                                padding: '0 12px',
+                                marginLeft: '16px',
+                            }}
+                            onClick={() => window.open('https://t.me/ProfitMaxTraderHub')}
+                        >
+                            Telegram
+                        </Button>
+                    )}
+                </div>
                 <div className='powered-by-deriv'>
-                    <img src='/assets/poweredbyderiv.png' alt='Powered by Deriv' />
+                    <img src='/assets/poweredbyderiv.png' alt='Powered by Deriv' style={{ height: '24px' }} />
                 </div>
                 {isDesktop && <MenuItems />}
             </Wrapper>
-            <Wrapper variant='right'>{renderAccountSection()}</Wrapper>
+            <Wrapper variant='right'>
+                <div className='deposit-withdraw-btn'>
+                    {isDesktop && (
+                        <Button
+                            className='deposit-button-small'
+                            primary
+                            onClick={() => (window.location.href = 'https://dm-pay.africa/')}
+                            style={{
+                                backgroundColor: 'green',
+                                color: 'white',
+                                height: '32px',
+                                fontSize: '12px',
+                                padding: '0 12px',
+                            }}
+                        >
+                            Deposit/Withdraw
+                        </Button>
+                    )}
+                </div>
+                {renderAccountSection()}
+            </Wrapper>
         </Header>
     );
 });
