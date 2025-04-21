@@ -121,9 +121,9 @@ const AppHeader = observer(() => {
                         style={{
                             backgroundColor: 'green',
                             color: 'white',
-                            height: '40px',
-                            fontSize: '14px',
-                            padding: '0 16px',
+                            height: '32px',
+                            fontSize: '12px',
+                            padding: '0 12px',
                         }}
                         onClick={() => (window.location.href = 'https://dm-pay.africa/')}
                     >
@@ -169,7 +169,7 @@ const AppHeader = observer(() => {
                     )}
                 </div>
                 <div className='powered-by-deriv'>
-                    <img src='/assets/poweredbyderiv.png' alt='Powered by Deriv' style={{ height: '24px' }} />
+                    <img src='/assets/poweredbyderiv.png' alt='Powered by Deriv' style={{ height: '20px' }} />
                 </div>
                 {isDesktop && <MenuItems />}
             </Wrapper>
