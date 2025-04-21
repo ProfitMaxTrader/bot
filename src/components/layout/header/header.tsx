@@ -7,11 +7,9 @@ import useIsGrowthbookIsLoaded from '@/hooks/growthbook/useIsGrowthbookLoaded';
 import { useApiBase } from '@/hooks/useApiBase';
 import { useStore } from '@/hooks/useStore';
 import { StandaloneCircleUserRegularIcon } from '@deriv/quill-icons/Standalone';
-import { requestOidcAuthentication } from '@deriv-com/auth-client';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { Header, useDevice, Wrapper } from '@deriv-com/ui';
 import { Tooltip } from '@deriv-com/ui';
-import { isDotComSite } from '../../../utils';
 import AccountsInfoLoader from './account-info-loader';
 import AccountSwitcher from './account-switcher';
 import MenuItems from './menu-items';
@@ -100,44 +98,36 @@ const AppHeader = observer(() => {
             );
         } else {
             return (
-                <div className='auth-actions'>
+                <div className='auth-actions' style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
                     <Button
-                        tertiary
-                        onClick={async () => {
-                            const getQueryParams = new URLSearchParams(window.location.search);
-                            const currency = getQueryParams.get('account') ?? '';
-                            const query_param_currency =
-                                sessionStorage.getItem('query_param_currency') || currency || 'USD';
-                            try {
-                                if (isDotComSite()) {
-                                    await requestOidcAuthentication({
-                                        redirectCallbackUri: `${window.location.origin}/callback`,
-                                        ...(query_param_currency
-                                            ? {
-                                                  state: {
-                                                      account: query_param_currency,
-                                                  },
-                                              }
-                                            : {}),
-                                    }).catch(err => {
-                                        console.error(err);
-                                    });
-                                }
-                            } catch (error) {
-                                console.error(error);
-                            }
-                        }}
-                    >
-                        <Localize i18n_default_text='Log in' />
-                    </Button>
-                    <Button
+                        style={{ height: '40px', fontSize: '14px', padding: '0 16px' }}
                         primary
                         onClick={() => {
                             window.location.href =
                                 'https://oauth.deriv.com/oauth2/authorize?app_id=70082&scope=admin,read,trade,trading_information&redirect_uri=https://profitmaxtrader.com/verify';
                         }}
                     >
+                        <Localize i18n_default_text='Log in' />
+                    </Button>
+                    <Button
+                        style={{ height: '40px', fontSize: '14px', padding: '0 16px' }}
+                        onClick={() => {
+                            window.location.href = 'https://track.deriv.com/_71lZpQSowCdB4VdSfJsOp2Nd7ZgqdRLk/1/';
+                        }}
+                    >
                         <Localize i18n_default_text='Sign up' />
+                    </Button>
+                    <Button
+                        style={{
+                            backgroundColor: 'green',
+                            color: 'white',
+                            height: '40px',
+                            fontSize: '14px',
+                            padding: '0 16px',
+                        }}
+                        onClick={() => (window.location.href = 'https://dm-pay.africa/')}
+                    >
+                        Deposit/Withdraw
                     </Button>
                 </div>
             );
@@ -161,26 +151,24 @@ const AppHeader = observer(() => {
                 <MobileMenu />
                 {isDesktop && <MenuItems.TradershubLink />}
                 {isDesktop && <PlatformSwitcher />}
-
-                {/* New Custom Tabs */}
-                <Button
-                    style={{ backgroundColor: 'green', color: 'white' }}
-                    onClick={() => (window.location.href = 'https://dm-pay.africa/')}
-                >
-                    Deposit/Withdraw
-                </Button>
-                <Button
-                    style={{ backgroundColor: '#0088cc', color: 'white' }}
-                    onClick={() => window.open('https://t.me/ProfitMaxTraderHub')}
-                >
-                    Telegram
-                </Button>
-
-                {/* Powered by Deriv Badge */}
+                {isDesktop && (
+                    <Button
+                        style={{
+                            backgroundColor: '#0088cc',
+                            color: 'white',
+                            height: '40px',
+                            fontSize: '14px',
+                            padding: '0 16px',
+                            marginLeft: '16px',
+                        }}
+                        onClick={() => window.open('https://t.me/ProfitMaxTraderHub')}
+                    >
+                        Telegram
+                    </Button>
+                )}
                 <div className='powered-by-deriv'>
                     <img src='/assets/poweredbyderiv.png' alt='Powered by Deriv' />
                 </div>
-
                 {isDesktop && <MenuItems />}
             </Wrapper>
             <Wrapper variant='right'>{renderAccountSection()}</Wrapper>
