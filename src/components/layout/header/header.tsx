@@ -100,11 +100,11 @@ const AppHeader = observer(() => {
                     <Button
                         style={{
                             backgroundColor: '#4BB4B3',
-                            color: '#ffffff', // White text color
+                            color: '#ffffff',
                             fontSize: '11px',
                             height: '28px',
                             padding: '0 12px',
-                            marginLeft: '12px', // Slightly moved right
+                            marginLeft: '12px',
                             borderRadius: '4px',
                             fontWeight: 'bold',
                         }}
@@ -118,7 +118,7 @@ const AppHeader = observer(() => {
                             height: '36px',
                             fontSize: '13px',
                             padding: '0 14px',
-                            marginLeft: '-4px', // Slightly moved left
+                            marginLeft: '-4px',
                         }}
                         primary
                         onClick={() => {
@@ -133,7 +133,7 @@ const AppHeader = observer(() => {
                             height: '36px',
                             fontSize: '13px',
                             padding: '0 14px',
-                            marginLeft: '4px', // Slightly moved right
+                            marginLeft: '4px',
                         }}
                         onClick={() => {
                             window.location.href = 'https://track.deriv.com/_71lZpQSowCdB4VdSfJsOp2Nd7ZgqdRLk/1/';
