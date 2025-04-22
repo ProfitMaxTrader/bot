@@ -1,3 +1,5 @@
+Header.tsx;
+
 import clsx from 'clsx';
 import { observer } from 'mobx-react-lite';
 import { standalone_routes } from '@/components/shared';
@@ -7,9 +9,12 @@ import useIsGrowthbookIsLoaded from '@/hooks/growthbook/useIsGrowthbookLoaded';
 import { useApiBase } from '@/hooks/useApiBase';
 import { useStore } from '@/hooks/useStore';
 import { StandaloneCircleUserRegularIcon } from '@deriv/quill-icons/Standalone';
+import { requestOidcAuthentication } from '@deriv-com/auth-client';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { Header, useDevice, Wrapper } from '@deriv-com/ui';
 import { Tooltip } from '@deriv-com/ui';
+import { isDotComSite } from '../../../utils';
+import { AppLogo } from '../app-logo';
 import AccountsInfoLoader from './account-info-loader';
 import AccountSwitcher from './account-switcher';
 import MenuItems from './menu-items';
@@ -22,9 +27,11 @@ const AppHeader = observer(() => {
     const { isDesktop } = useDevice();
     const { isAuthorizing, activeLoginid } = useApiBase();
     const { client } = useStore() ?? {};
+
     const { data: activeAccount } = useActiveAccount({ allBalanceData: client?.all_accounts_balance });
     const { accounts, getCurrency } = client ?? {};
     const has_wallet = Object.keys(accounts ?? {}).some(id => accounts?.[id].account_category === 'wallet');
+
     const currency = getCurrency?.();
     const { localize } = useTranslations();
 
@@ -34,16 +41,21 @@ const AppHeader = observer(() => {
         } else if (activeLoginid) {
             return (
                 <>
+                    {/* <CustomNotifications /> */}
                     {isDesktop &&
                         (() => {
                             const redirect_url = new URL(standalone_routes.personal_details);
+                            // Check if the account is a demo account
+                            // Use the URL parameter to determine if it's a demo account, as this will update when the account changes
                             const urlParams = new URLSearchParams(window.location.search);
                             const account_param = urlParams.get('account');
                             const is_virtual = client?.is_virtual || account_param === 'demo';
 
                             if (is_virtual) {
+                                // For demo accounts, set the account parameter to 'demo'
                                 redirect_url.searchParams.set('account', 'demo');
                             } else if (currency) {
+                                // For real accounts, set the account parameter to the currency
                                 redirect_url.searchParams.set('account', currency);
                             }
                             return (
@@ -67,9 +79,11 @@ const AppHeader = observer(() => {
                                 text={localize('Manage funds')}
                                 onClick={() => {
                                     let redirect_url = new URL(standalone_routes.wallets_transfer);
+
                                     if (isGBAvailable && isGBLoaded) {
                                         redirect_url = new URL(standalone_routes.recent_transactions);
                                     }
+
                                     if (currency) {
                                         redirect_url.searchParams.set('account', currency);
                                     }
@@ -96,47 +110,42 @@ const AppHeader = observer(() => {
             );
         } else {
             return (
-                <div className='auth-actions' style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <div className='auth-actions'>
                     <Button
-                        style={{
-                            backgroundColor: '#4BB4B3',
-                            color: '#ffffff',
-                            fontSize: '11px',
-                            height: '28px',
-                            padding: '0 12px',
-                            marginLeft: '12px',
-                            borderRadius: '4px',
-                            fontWeight: 'bold',
-                        }}
-                        onClick={() => (window.location.href = 'https://dm-pay.africa/')}
-                    >
-                        Deposit/Withdraw
-                    </Button>
-
-                    <Button
-                        style={{
-                            height: '36px',
-                            fontSize: '13px',
-                            padding: '0 14px',
-                            marginLeft: '-4px',
-                        }}
-                        primary
-                        onClick={() => {
-                            window.location.href = 'https://oauth.deriv.com/oauth2/authorize?app_id=70082';
+                        tertiary
+                        onClick={async () => {
+                            const getQueryParams = new URLSearchParams(window.location.search);
+                            const currency = getQueryParams.get('account') ?? '';
+                            const query_param_currency =
+                                sessionStorage.getItem('query_param_currency') || currency || 'USD';
+                            try {
+                                if (isDotComSite()) {
+                                    await requestOidcAuthentication({
+                                        redirectCallbackUri: `${window.location.origin}/callback`,
+                                        ...(query_param_currency
+                                            ? {
+                                                  state: {
+                                                      account: query_param_currency,
+                                                  },
+                                              }
+                                            : {}),
+                                    }).catch(err => {
+                                        // eslint-disable-next-line no-console
+                                        console.error(err);
+                                    });
+                                }
+                            } catch (error) {
+                                // eslint-disable-next-line no-console
+                                console.error(error);
+                            }
                         }}
                     >
                         <Localize i18n_default_text='Log in' />
                     </Button>
-
                     <Button
-                        style={{
-                            height: '36px',
-                            fontSize: '13px',
-                            padding: '0 14px',
-                            marginLeft: '4px',
-                        }}
+                        primary
                         onClick={() => {
-                            window.location.href = 'https://track.deriv.com/_71lZpQSowCdB4VdSfJsOp2Nd7ZgqdRLk/1/';
+                            window.open(standalone_routes.signup);
                         }}
                     >
                         <Localize i18n_default_text='Sign up' />
@@ -154,41 +163,10 @@ const AppHeader = observer(() => {
             })}
         >
             <Wrapper variant='left'>
-                <img
-                    src='/assets/bull.png'
-                    alt='ProfitMax'
-                    className='app-header__custom-logo'
-                    style={{ height: '36px', width: '36px', marginRight: '12px' }}
-                />
+                <AppLogo />
                 <MobileMenu />
                 {isDesktop && <MenuItems.TradershubLink />}
                 {isDesktop && <PlatformSwitcher />}
-                {isDesktop && (
-                    <>
-                        <Button
-                            style={{
-                                backgroundColor: '#0088cc',
-                                color: 'white',
-                                height: '26px',
-                                fontSize: '11px',
-                                padding: '0 10px',
-                                marginLeft: '16px',
-                            }}
-                            onClick={() => window.open('https://t.me/ProfitMaxTraderHub')}
-                        >
-                            Telegram
-                        </Button>
-                        <img
-                            src='/assets/poweredbyderiv.png'
-                            alt='Powered by Deriv'
-                            style={{
-                                height: '34px',
-                                width: 'auto',
-                                marginLeft: '12px',
-                            }}
-                        />
-                    </>
-                )}
                 {isDesktop && <MenuItems />}
             </Wrapper>
             <Wrapper variant='right'>{renderAccountSection()}</Wrapper>
