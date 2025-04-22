@@ -104,9 +104,9 @@ const AppHeader = observer(() => {
                         style={{
                             backgroundColor: 'green',
                             color: 'white',
-                            height: '32px',
-                            fontSize: '12px',
-                            padding: '0 12px',
+                            fontSize: '11px',
+                            height: '26px',
+                            padding: '0 8px',
                         }}
                         onClick={() => (window.location.href = 'https://dm-pay.africa/')}
                     >
@@ -115,7 +115,7 @@ const AppHeader = observer(() => {
 
                     {/* Login */}
                     <Button
-                        style={{ height: '40px', fontSize: '14px', padding: '0 16px' }}
+                        style={{ height: '36px', fontSize: '13px', padding: '0 14px' }}
                         primary
                         onClick={() => {
                             window.location.href =
@@ -127,7 +127,7 @@ const AppHeader = observer(() => {
 
                     {/* Sign Up */}
                     <Button
-                        style={{ height: '40px', fontSize: '14px', padding: '0 16px' }}
+                        style={{ height: '36px', fontSize: '13px', padding: '0 14px' }}
                         onClick={() => {
                             window.location.href = 'https://track.deriv.com/_71lZpQSowCdB4VdSfJsOp2Nd7ZgqdRLk/1/';
                         }}
@@ -151,45 +151,43 @@ const AppHeader = observer(() => {
                     src='/assets/bull.png'
                     alt='ProfitMax'
                     className='app-header__custom-logo'
-                    style={{ height: '40px', marginRight: '12px' }} // Slightly larger bull logo
+                    style={{ height: '36px', width: '36px', marginRight: '12px' }}
                 />
                 <MobileMenu />
                 {isDesktop && <MenuItems.TradershubLink />}
                 {isDesktop && <PlatformSwitcher />}
-                <div className='telegram-button'>
-                    {isDesktop && (
-                        <Button
-                            style={{
-                                backgroundColor: '#0088cc',
-                                color: 'white',
-                                height: '32px',
-                                fontSize: '12px',
-                                padding: '0 12px',
-                                marginLeft: '16px',
-                            }}
-                            onClick={() => window.open('https://t.me/ProfitMaxTraderHub')}
-                        >
-                            Telegram
-                        </Button>
-                    )}
-                </div>
-
-                {/* Powered by Deriv Logo centered between Telegram and Deposit/Withdraw */}
+                {isDesktop && (
+                    <Button
+                        style={{
+                            backgroundColor: '#0088cc',
+                            color: 'white',
+                            height: '26px',
+                            fontSize: '11px',
+                            padding: '0 10px',
+                            marginLeft: '16px',
+                        }}
+                        onClick={() => window.open('https://t.me/ProfitMaxTraderHub')}
+                    >
+                        Telegram
+                    </Button>
+                )}
+                {/* Centered Powered by Deriv */}
                 <div
                     className='powered-by-deriv'
                     style={{
-                        marginLeft: '12px',
-                        marginRight: '12px',
-                        textAlign: 'center',
+                        marginLeft: 'auto',
+                        marginRight: 'auto',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
                     }}
                 >
                     <img
                         src='/assets/poweredbyderiv.png'
                         alt='Powered by Deriv'
-                        style={{ height: '28px' }} // Slightly larger size
+                        style={{ height: '28px', width: 'auto' }}
                     />
                 </div>
-
                 {isDesktop && <MenuItems />}
             </Wrapper>
             <Wrapper variant='right'>{renderAccountSection()}</Wrapper>
