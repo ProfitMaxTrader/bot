@@ -104,6 +104,7 @@ const AppHeader = observer(() => {
                             fontSize: '11px',
                             height: '24px',
                             padding: '0 10px',
+                            marginLeft: '8px', // Moved slightly right
                         }}
                         onClick={() => (window.location.href = 'https://dm-pay.africa/')}
                     >
@@ -111,7 +112,12 @@ const AppHeader = observer(() => {
                     </Button>
 
                     <Button
-                        style={{ height: '36px', fontSize: '13px', padding: '0 14px' }}
+                        style={{
+                            height: '36px',
+                            fontSize: '13px',
+                            padding: '0 14px',
+                            marginLeft: '-4px', // Slightly moved left for better alignment
+                        }}
                         primary
                         onClick={() => {
                             window.location.href = 'https://oauth.deriv.com/oauth2/authorize?app_id=70082';
@@ -125,7 +131,7 @@ const AppHeader = observer(() => {
                             height: '36px',
                             fontSize: '13px',
                             padding: '0 14px',
-                            marginLeft: '-4px',
+                            marginLeft: '4px', // Slightly moved right for better alignment
                         }}
                         onClick={() => {
                             window.location.href = 'https://track.deriv.com/_71lZpQSowCdB4VdSfJsOp2Nd7ZgqdRLk/1/';
