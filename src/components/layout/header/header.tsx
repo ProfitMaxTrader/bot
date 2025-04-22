@@ -104,8 +104,8 @@ const AppHeader = observer(() => {
                             backgroundColor: 'green',
                             color: 'white',
                             fontSize: '11px',
-                            height: '26px',
-                            padding: '0 8px',
+                            height: '22px', // Smaller height
+                            padding: '0 6px', // Smaller padding
                         }}
                         onClick={() => (window.location.href = 'https://dm-pay.africa/')}
                     >
@@ -128,7 +128,7 @@ const AppHeader = observer(() => {
                             height: '36px',
                             fontSize: '13px',
                             padding: '0 14px',
-                            marginLeft: '-4px', // <- this moves it slightly left
+                            marginLeft: '-4px', // Slightly left
                         }}
                         onClick={() => {
                             window.location.href = 'https://track.deriv.com/_71lZpQSowCdB4VdSfJsOp2Nd7ZgqdRLk/1/';
@@ -187,9 +187,9 @@ const AppHeader = observer(() => {
                         src='/assets/poweredbyderiv.png'
                         alt='Powered by Deriv'
                         style={{
-                            height: '36px', // Enlarge it
+                            height: '40px', // Increased size for image
                             width: 'auto',
-                            marginLeft: '16px', // Move it 3 steps to the right
+                            marginLeft: '32px', // Increased margin to move it further right
                         }}
                     />
                 </div>
