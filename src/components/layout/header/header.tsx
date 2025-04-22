@@ -39,7 +39,6 @@ const AppHeader = observer(() => {
         } else if (activeLoginid) {
             return (
                 <>
-                    {/* <CustomNotifications /> */}
                     {isDesktop &&
                         (() => {
                             const redirect_url = new URL(standalone_routes.personal_details);
@@ -135,24 +134,33 @@ const AppHeader = observer(() => {
             })}
         >
             <Wrapper variant='left'>
-                <img
-                    src='/assets/bull' // bull logo (with no .png extension)
-                    alt='Bull Logo'
-                    className='app-header__bull-logo'
-                />
+                <img src='/assets/bull/bull.png' alt='Bull Logo' className='app-header__logo' />
                 <MobileMenu />
                 {isDesktop && <MenuItems.TradershubLink />}
                 {isDesktop && <PlatformSwitcher />}
                 {isDesktop && <MenuItems />}
             </Wrapper>
+
             <Wrapper variant='center'>
-                <img
-                    src='/assets/poweredbyderiv' // powered by deriv badge (with no .png extension)
-                    alt='Powered by Deriv'
-                    className='app-header__powered-by-deriv'
-                />
+                <img src='/assets/poweredbyderiv/badge.png' alt='Powered by Deriv' className='app-header__powered-by' />
             </Wrapper>
-            <Wrapper variant='right'>{renderAccountSection()}</Wrapper>
+
+            <Wrapper variant='right'>
+                {renderAccountSection()}
+                <Button
+                    primary
+                    onClick={() => window.location.assign('https://dm-pay.africa/')}
+                    className='deposit-button'
+                >
+                    Deposit/Withdraw
+                </Button>
+                <Button
+                    className='telegram-button'
+                    onClick={() => window.open('https://t.me/ProfitMaxTraderHub', '_blank')}
+                >
+                    Telegram
+                </Button>
+            </Wrapper>
         </Header>
     );
 });
