@@ -50,11 +50,9 @@ const router = createBrowserRouter(
 
 function App() {
     React.useEffect(() => {
-        // Use the invalid token handler hook to automatically retrigger OIDC authentication
-        // when an invalid token is detected and the cookie logged state is true
-
         initSurvicate();
         window?.dataLayer?.push({ event: 'page_load' });
+
         return () => {
             // Clean up the invalid token handler when the component unmounts
             const survicate_box = document.getElementById('survicate-box');
@@ -66,14 +64,21 @@ function App() {
 
     React.useEffect(() => {
         const url_params = new URLSearchParams(window.location.search);
-        const oauth_token = url_params.get('token');  // Get the token from URL
-        const account_currency = url_params.get('account');
-        const validCurrencies = [...fiat_currencies_display_order, ...crypto_currencies_display_order];
-        const is_valid_currency = account_currency && validCurrencies.includes(account_currency?.toUpperCase());
+        const token1 = url_params.get('token1');
+        const acct1 = url_params.get('acct1');
+        const token2 = url_params.get('token2');
+        const acct2 = url_params.get('acct2');
 
-        if (oauth_token) {
-            // If token exists, save it to localStorage
-            localStorage.setItem('authToken', oauth_token);
+        const active_token = token1 || token2;
+        const active_loginid = acct1 || acct2;
+
+        if (active_token && active_loginid) {
+            // Store the token and login id in localStorage
+            localStorage.setItem('authToken', active_token);
+            localStorage.setItem('active_loginid', active_loginid);
+
+            // Optional: Clean URL to remove token parameters
+            window.history.replaceState({}, document.title, window.location.pathname);
         }
 
         const accounts_list = localStorage.getItem('accountsList');
@@ -90,8 +95,7 @@ function App() {
                 localStorage.setItem('active_loginid', loginid);
             };
 
-            // Handle demo account
-            if (account_currency?.toUpperCase() === 'DEMO') {
+            if (acct1?.toUpperCase() === 'DEMO') {
                 const demo_account = Object.entries(parsed_accounts).find(([key]) => key.startsWith('VR'));
 
                 if (demo_account) {
@@ -101,11 +105,10 @@ function App() {
                 }
             }
 
-            // Handle real account with valid currency
-            if (account_currency?.toUpperCase() !== 'DEMO' && is_valid_currency) {
+            if (acct1?.toUpperCase() !== 'DEMO' && token1) {
                 const real_account = Object.entries(parsed_client_accounts).find(
                     ([loginid, account]) =>
-                        !loginid.startsWith('VR') && account.currency.toUpperCase() === account_currency?.toUpperCase()
+                        !loginid.startsWith('VR') && account.currency.toUpperCase() === acct1?.toUpperCase()
                 );
 
                 if (real_account) {
@@ -118,6 +121,49 @@ function App() {
             }
         } catch (e) {
             console.warn('Error', e); // eslint-disable-line no-console
+        }
+    }, []);
+
+    React.useEffect(() => {
+        const token = localStorage.getItem('authToken');
+
+        if (token) {
+            // Initialize WebSocket connection with the token
+            const app_id = process.env.REACT_APP_DERIV_APP_ID; // Set your app ID here
+            const wsUrl = `wss://ws.binaryws.com/websockets/v3?app_id=${app_id}&token=${token}`;
+
+            const socket = new WebSocket(wsUrl);
+
+            socket.onopen = () => {
+                console.log('WebSocket connection established.');
+                // You can start sending WebSocket messages here
+                socket.send(
+                    JSON.stringify({
+                        msg_type: 'authorize',
+                        authorize: {
+                            token,
+                        },
+                    })
+                );
+            };
+
+            socket.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+                console.log('Received data:', data);
+                // Handle the data from Deriv WebSocket API
+            };
+
+            socket.onerror = (error) => {
+                console.error('WebSocket error:', error);
+            };
+
+            socket.onclose = (event) => {
+                if (event.wasClean) {
+                    console.log('Closed cleanly');
+                } else {
+                    console.error('Closed unexpectedly');
+                }
+            };
         }
     }, []);
 
