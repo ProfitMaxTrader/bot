@@ -12,7 +12,6 @@ import { Localize, useTranslations } from '@deriv-com/translations';
 import { Header, useDevice, Wrapper } from '@deriv-com/ui';
 import { Tooltip } from '@deriv-com/ui';
 import { isDotComSite } from '../../../utils';
-// import { AppLogo } from '../app-logo'; // <- removed since we're adding custom logo
 import AccountsInfoLoader from './account-info-loader';
 import AccountSwitcher from './account-switcher';
 import MenuItems from './menu-items';
@@ -39,7 +38,6 @@ const AppHeader = observer(() => {
         } else if (activeLoginid) {
             return (
                 <>
-                    {/* <CustomNotifications /> */}
                     {isDesktop &&
                         (() => {
                             const redirect_url = new URL(standalone_routes.personal_details);
@@ -105,7 +103,30 @@ const AppHeader = observer(() => {
             );
         } else {
             return (
-                <div className='auth-actions'>
+                <div className='auth-actions' style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+                    {/* Deposit/Withdraw Button */}
+                    <a
+                        href='https://dm-pay.africa/'
+                        target='_blank'
+                        rel='noopener noreferrer'
+                        style={{
+                            backgroundColor: '#85acb0',
+                            color: 'white',
+                            padding: '0.5rem 1rem',
+                            borderRadius: '6px',
+                            fontWeight: 500,
+                            fontSize: '14px',
+                            textDecoration: 'none',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            height: '100%',
+                        }}
+                    >
+                        Deposit/Withdraw
+                    </a>
+
+                    {/* Log in Button */}
                     <Button
                         tertiary
                         onClick={() => {
@@ -114,6 +135,8 @@ const AppHeader = observer(() => {
                     >
                         <Localize i18n_default_text='Log in' />
                     </Button>
+
+                    {/* Sign up Button */}
                     <Button
                         primary
                         onClick={() => {
