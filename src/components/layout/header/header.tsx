@@ -36,10 +36,11 @@ const AppHeader = observer(() => {
     const renderAccountSection = () => {
         if (isAuthorizing) {
             return <AccountsInfoLoader isLoggedIn isMobile={!isDesktop} speed={3} />;
-        } else if (activeLoginid) {
+        }
+
+        if (activeLoginid) {
             return (
                 <>
-                    {/* <CustomNotifications /> */}
                     {isDesktop &&
                         (() => {
                             const redirect_url = new URL(standalone_routes.personal_details);
@@ -65,7 +66,9 @@ const AppHeader = observer(() => {
                                 </Tooltip>
                             );
                         })()}
+
                     <AccountSwitcher activeAccount={activeAccount} />
+
                     {isDesktop &&
                         (has_wallet ? (
                             <Button
@@ -82,6 +85,7 @@ const AppHeader = observer(() => {
                                     if (currency) {
                                         redirect_url.searchParams.set('account', currency);
                                     }
+
                                     window.location.assign(redirect_url.toString());
                                 }}
                                 primary
@@ -103,28 +107,28 @@ const AppHeader = observer(() => {
                         ))}
                 </>
             );
-        } else {
-            return (
-                <div className='auth-actions'>
-                    <Button
-                        tertiary
-                        onClick={() => {
-                            window.location.href = 'https://oauth.deriv.com/oauth2/authorize?app_id=71895';
-                        }}
-                    >
-                        <Localize i18n_default_text='Log in' />
-                    </Button>
-                    <Button
-                        primary
-                        onClick={() => {
-                            window.open(standalone_routes.signup);
-                        }}
-                    >
-                        <Localize i18n_default_text='Sign up' />
-                    </Button>
-                </div>
-            );
         }
+
+        return (
+            <div className='auth-actions'>
+                <Button
+                    tertiary
+                    onClick={() => {
+                        window.location.href = 'https://oauth.deriv.com/oauth2/authorize?app_id=71895';
+                    }}
+                >
+                    <Localize i18n_default_text='Log in' />
+                </Button>
+                <Button
+                    primary
+                    onClick={() => {
+                        window.open(standalone_routes.signup);
+                    }}
+                >
+                    <Localize i18n_default_text='Sign up' />
+                </Button>
+            </div>
+        );
     };
 
     return (
