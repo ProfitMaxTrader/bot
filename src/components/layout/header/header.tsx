@@ -186,7 +186,11 @@ const AppHeader = observer(() => {
                     <img
                         src='/assets/poweredbyderiv.png'
                         alt='Powered by Deriv'
-                        style={{ height: '28px', width: 'auto' }}
+                        style={{
+                            height: '36px', // Enlarge it
+                            width: 'auto',
+                            marginLeft: '16px', // Move it 3 steps to the right
+                        }}
                     />
                 </div>
                 {isDesktop && <MenuItems />}
