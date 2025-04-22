@@ -65,13 +65,19 @@ function App() {
     }, []);
 
     React.useEffect(() => {
-        const accounts_list = localStorage.getItem('accountsList');
-        const client_accounts = localStorage.getItem('clientAccounts');
         const url_params = new URLSearchParams(window.location.search);
+        const oauth_token = url_params.get('token');  // Get the token from URL
         const account_currency = url_params.get('account');
         const validCurrencies = [...fiat_currencies_display_order, ...crypto_currencies_display_order];
-
         const is_valid_currency = account_currency && validCurrencies.includes(account_currency?.toUpperCase());
+
+        if (oauth_token) {
+            // If token exists, save it to localStorage
+            localStorage.setItem('authToken', oauth_token);
+        }
+
+        const accounts_list = localStorage.getItem('accountsList');
+        const client_accounts = localStorage.getItem('clientAccounts');
 
         if (!accounts_list || !client_accounts) return;
 
