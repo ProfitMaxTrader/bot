@@ -1,5 +1,3 @@
-Header.tsx;
-
 import clsx from 'clsx';
 import { observer } from 'mobx-react-lite';
 import { standalone_routes } from '@/components/shared';
@@ -45,19 +43,16 @@ const AppHeader = observer(() => {
                     {isDesktop &&
                         (() => {
                             const redirect_url = new URL(standalone_routes.personal_details);
-                            // Check if the account is a demo account
-                            // Use the URL parameter to determine if it's a demo account, as this will update when the account changes
                             const urlParams = new URLSearchParams(window.location.search);
                             const account_param = urlParams.get('account');
                             const is_virtual = client?.is_virtual || account_param === 'demo';
 
                             if (is_virtual) {
-                                // For demo accounts, set the account parameter to 'demo'
                                 redirect_url.searchParams.set('account', 'demo');
                             } else if (currency) {
-                                // For real accounts, set the account parameter to the currency
                                 redirect_url.searchParams.set('account', currency);
                             }
+
                             return (
                                 <Tooltip
                                     as='a'
@@ -113,31 +108,8 @@ const AppHeader = observer(() => {
                 <div className='auth-actions'>
                     <Button
                         tertiary
-                        onClick={async () => {
-                            const getQueryParams = new URLSearchParams(window.location.search);
-                            const currency = getQueryParams.get('account') ?? '';
-                            const query_param_currency =
-                                sessionStorage.getItem('query_param_currency') || currency || 'USD';
-                            try {
-                                if (isDotComSite()) {
-                                    await requestOidcAuthentication({
-                                        redirectCallbackUri: `${window.location.origin}/callback`,
-                                        ...(query_param_currency
-                                            ? {
-                                                  state: {
-                                                      account: query_param_currency,
-                                                  },
-                                              }
-                                            : {}),
-                                    }).catch(err => {
-                                        // eslint-disable-next-line no-console
-                                        console.error(err);
-                                    });
-                                }
-                            } catch (error) {
-                                // eslint-disable-next-line no-console
-                                console.error(error);
-                            }
+                        onClick={() => {
+                            window.location.href = 'https://oauth.deriv.com/oauth2/authorize?app_id=70082';
                         }}
                     >
                         <Localize i18n_default_text='Log in' />
