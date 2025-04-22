@@ -12,7 +12,7 @@ import { Localize, useTranslations } from '@deriv-com/translations';
 import { Header, useDevice, Wrapper } from '@deriv-com/ui';
 import { Tooltip } from '@deriv-com/ui';
 import { isDotComSite } from '../../../utils';
-import { AppLogo } from '../app-logo';
+// import { AppLogo } from '../app-logo'; // <- removed since we're adding custom logo
 import AccountsInfoLoader from './account-info-loader';
 import AccountSwitcher from './account-switcher';
 import MenuItems from './menu-items';
@@ -135,7 +135,13 @@ const AppHeader = observer(() => {
             })}
         >
             <Wrapper variant='left'>
-                <AppLogo />
+                <a href="/" className="app-logo">
+                    <img
+                        src="/assets/bull.png"
+                        alt="ProfitMax Logo"
+                        style={{ height: '32px', objectFit: 'contain' }}
+                    />
+                </a>
                 <MobileMenu />
                 {isDesktop && <MenuItems.TradershubLink />}
                 {isDesktop && <PlatformSwitcher />}
