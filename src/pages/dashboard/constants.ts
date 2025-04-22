@@ -8,8 +8,14 @@ export type TSidebarItem = {
 
 export const SIDEBAR_INTRO = (): TSidebarItem[] => [
     {
-        label: localize('Welcome to Deriv Bot!'),
+        label: localize('Welcome to ProfitMax Pro Trader!'),
         content: [
+            {
+                data: localize('Trade Smarter, Not Harder with ProfitMax Pro.'),
+            },
+            {
+                data: localize('Unlock the power of automation and take your trading to the next level.'),
+            },
             {
                 data: localize(
                     'Ready to automate your trading strategy without writing any code? You’ve come to the right place.'
