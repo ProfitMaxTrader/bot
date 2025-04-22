@@ -99,7 +99,6 @@ const AppHeader = observer(() => {
         } else {
             return (
                 <div className='auth-actions' style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    {/* Deposit/Withdraw Button - slightly smaller */}
                     <Button
                         style={{
                             backgroundColor: 'green',
@@ -113,7 +112,6 @@ const AppHeader = observer(() => {
                         Deposit/Withdraw
                     </Button>
 
-                    {/* Login */}
                     <Button
                         style={{ height: '36px', fontSize: '13px', padding: '0 14px' }}
                         primary
@@ -125,9 +123,13 @@ const AppHeader = observer(() => {
                         <Localize i18n_default_text='Log in' />
                     </Button>
 
-                    {/* Sign Up */}
                     <Button
-                        style={{ height: '36px', fontSize: '13px', padding: '0 14px' }}
+                        style={{
+                            height: '36px',
+                            fontSize: '13px',
+                            padding: '0 14px',
+                            marginLeft: '-4px', // <- this moves it slightly left
+                        }}
                         onClick={() => {
                             window.location.href = 'https://track.deriv.com/_71lZpQSowCdB4VdSfJsOp2Nd7ZgqdRLk/1/';
                         }}
@@ -171,7 +173,6 @@ const AppHeader = observer(() => {
                         Telegram
                     </Button>
                 )}
-                {/* Centered Powered by Deriv */}
                 <div
                     className='powered-by-deriv'
                     style={{
