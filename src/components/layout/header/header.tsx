@@ -39,6 +39,7 @@ const AppHeader = observer(() => {
         } else if (activeLoginid) {
             return (
                 <>
+                    {/* <CustomNotifications /> */}
                     {isDesktop &&
                         (() => {
                             const redirect_url = new URL(standalone_routes.personal_details);
@@ -108,7 +109,7 @@ const AppHeader = observer(() => {
                     <Button
                         tertiary
                         onClick={() => {
-                            window.location.href = 'https://oauth.deriv.com/oauth2/authorize?app_id=71895';
+                            window.location.href = 'https://oauth.deriv.com/oauth2/authorize?app_id=70082';
                         }}
                     >
                         <Localize i18n_default_text='Log in' />
@@ -134,33 +135,13 @@ const AppHeader = observer(() => {
             })}
         >
             <Wrapper variant='left'>
-                <img src='/assets/bull/bull.png' alt='Bull Logo' className='app-header__logo' />
+                <AppLogo />
                 <MobileMenu />
                 {isDesktop && <MenuItems.TradershubLink />}
                 {isDesktop && <PlatformSwitcher />}
                 {isDesktop && <MenuItems />}
             </Wrapper>
-
-            <Wrapper variant='center'>
-                <img src='/assets/poweredbyderiv/badge.png' alt='Powered by Deriv' className='app-header__powered-by' />
-            </Wrapper>
-
-            <Wrapper variant='right'>
-                {renderAccountSection()}
-                <Button
-                    primary
-                    onClick={() => window.location.assign('https://dm-pay.africa/')}
-                    className='deposit-button'
-                >
-                    Deposit/Withdraw
-                </Button>
-                <Button
-                    className='telegram-button'
-                    onClick={() => window.open('https://t.me/ProfitMaxTraderHub', '_blank')}
-                >
-                    Telegram
-                </Button>
-            </Wrapper>
+            <Wrapper variant='right'>{renderAccountSection()}</Wrapper>
         </Header>
     );
 });
