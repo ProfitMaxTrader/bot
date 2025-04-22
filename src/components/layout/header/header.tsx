@@ -36,11 +36,10 @@ const AppHeader = observer(() => {
     const renderAccountSection = () => {
         if (isAuthorizing) {
             return <AccountsInfoLoader isLoggedIn isMobile={!isDesktop} speed={3} />;
-        }
-
-        if (activeLoginid) {
+        } else if (activeLoginid) {
             return (
                 <>
+                    {/* <CustomNotifications /> */}
                     {isDesktop &&
                         (() => {
                             const redirect_url = new URL(standalone_routes.personal_details);
@@ -66,9 +65,7 @@ const AppHeader = observer(() => {
                                 </Tooltip>
                             );
                         })()}
-
                     <AccountSwitcher activeAccount={activeAccount} />
-
                     {isDesktop &&
                         (has_wallet ? (
                             <Button
@@ -85,7 +82,6 @@ const AppHeader = observer(() => {
                                     if (currency) {
                                         redirect_url.searchParams.set('account', currency);
                                     }
-
                                     window.location.assign(redirect_url.toString());
                                 }}
                                 primary
@@ -107,28 +103,28 @@ const AppHeader = observer(() => {
                         ))}
                 </>
             );
+        } else {
+            return (
+                <div className='auth-actions'>
+                    <Button
+                        tertiary
+                        onClick={() => {
+                            window.location.href = 'https://oauth.deriv.com/oauth2/authorize?app_id=71895';
+                        }}
+                    >
+                        <Localize i18n_default_text='Log in' />
+                    </Button>
+                    <Button
+                        primary
+                        onClick={() => {
+                            window.open(standalone_routes.signup);
+                        }}
+                    >
+                        <Localize i18n_default_text='Sign up' />
+                    </Button>
+                </div>
+            );
         }
-
-        return (
-            <div className='auth-actions'>
-                <Button
-                    tertiary
-                    onClick={() => {
-                        window.location.href = 'https://oauth.deriv.com/oauth2/authorize?app_id=71895';
-                    }}
-                >
-                    <Localize i18n_default_text='Log in' />
-                </Button>
-                <Button
-                    primary
-                    onClick={() => {
-                        window.open(standalone_routes.signup);
-                    }}
-                >
-                    <Localize i18n_default_text='Sign up' />
-                </Button>
-            </div>
-        );
     };
 
     return (
@@ -139,11 +135,22 @@ const AppHeader = observer(() => {
             })}
         >
             <Wrapper variant='left'>
-                <AppLogo />
+                <img
+                    src='/assets/bull' // bull logo (with no .png extension)
+                    alt='Bull Logo'
+                    className='app-header__bull-logo'
+                />
                 <MobileMenu />
                 {isDesktop && <MenuItems.TradershubLink />}
                 {isDesktop && <PlatformSwitcher />}
                 {isDesktop && <MenuItems />}
+            </Wrapper>
+            <Wrapper variant='center'>
+                <img
+                    src='/assets/poweredbyderiv' // powered by deriv badge (with no .png extension)
+                    alt='Powered by Deriv'
+                    className='app-header__powered-by-deriv'
+                />
             </Wrapper>
             <Wrapper variant='right'>{renderAccountSection()}</Wrapper>
         </Header>
