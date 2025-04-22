@@ -114,8 +114,7 @@ const AppHeader = observer(() => {
                         style={{ height: '36px', fontSize: '13px', padding: '0 14px' }}
                         primary
                         onClick={() => {
-                            window.location.href =
-                                'https://oauth.deriv.com/oauth2/authorize?app_id=70082&scope=read,trade,trading_information&redirect_uri=https://profitmaxtrader.com/verify';
+                            window.location.href = 'https://oauth.deriv.com/oauth2/authorize?app_id=70082';
                         }}
                     >
                         <Localize i18n_default_text='Log in' />
