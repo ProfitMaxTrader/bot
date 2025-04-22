@@ -99,12 +99,14 @@ const AppHeader = observer(() => {
                 <div className='auth-actions' style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <Button
                         style={{
-                            backgroundColor: '#4BB4B3', // Success Green
-                            color: 'white',
+                            backgroundColor: '#4BB4B3',
+                            color: '#ffffff',
                             fontSize: '11px',
-                            height: '24px',
-                            padding: '0 10px',
-                            marginLeft: '8px', // Moved slightly right
+                            height: '28px',
+                            padding: '0 12px',
+                            marginLeft: '12px',
+                            borderRadius: '4px',
+                            fontWeight: 'bold',
                         }}
                         onClick={() => (window.location.href = 'https://dm-pay.africa/')}
                     >
@@ -116,7 +118,7 @@ const AppHeader = observer(() => {
                             height: '36px',
                             fontSize: '13px',
                             padding: '0 14px',
-                            marginLeft: '-4px', // Slightly moved left for better alignment
+                            marginLeft: '-4px',
                         }}
                         primary
                         onClick={() => {
@@ -131,7 +133,7 @@ const AppHeader = observer(() => {
                             height: '36px',
                             fontSize: '13px',
                             padding: '0 14px',
-                            marginLeft: '4px', // Slightly moved right for better alignment
+                            marginLeft: '4px',
                         }}
                         onClick={() => {
                             window.location.href = 'https://track.deriv.com/_71lZpQSowCdB4VdSfJsOp2Nd7ZgqdRLk/1/';
@@ -182,7 +184,7 @@ const AppHeader = observer(() => {
                             style={{
                                 height: '34px',
                                 width: 'auto',
-                                marginLeft: '12px', // Closer to Telegram button
+                                marginLeft: '12px',
                             }}
                         />
                     </>
