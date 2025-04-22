@@ -98,7 +98,22 @@ const AppHeader = observer(() => {
             );
         } else {
             return (
-                <div className='auth-actions' style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                <div className='auth-actions' style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    {/* Deposit/Withdraw Button - smaller size */}
+                    <Button
+                        style={{
+                            backgroundColor: 'green',
+                            color: 'white',
+                            height: '28px',
+                            fontSize: '12px',
+                            padding: '0 10px',
+                        }}
+                        onClick={() => (window.location.href = 'https://dm-pay.africa/')}
+                    >
+                        Deposit/Withdraw
+                    </Button>
+
+                    {/* Login */}
                     <Button
                         style={{ height: '40px', fontSize: '14px', padding: '0 16px' }}
                         primary
@@ -109,6 +124,8 @@ const AppHeader = observer(() => {
                     >
                         <Localize i18n_default_text='Log in' />
                     </Button>
+
+                    {/* Sign Up */}
                     <Button
                         style={{ height: '40px', fontSize: '14px', padding: '0 16px' }}
                         onClick={() => {
@@ -116,18 +133,6 @@ const AppHeader = observer(() => {
                         }}
                     >
                         <Localize i18n_default_text='Sign up' />
-                    </Button>
-                    <Button
-                        style={{
-                            backgroundColor: 'green',
-                            color: 'white',
-                            height: '32px',
-                            fontSize: '12px',
-                            padding: '0 12px',
-                        }}
-                        onClick={() => (window.location.href = 'https://dm-pay.africa/')}
-                    >
-                        Deposit/Withdraw
                     </Button>
                 </div>
             );
@@ -168,32 +173,12 @@ const AppHeader = observer(() => {
                         </Button>
                     )}
                 </div>
-                <div className='powered-by-deriv'>
-                    <img src='/assets/poweredbyderiv.png' alt='Powered by Deriv' style={{ height: '20px' }} />
+                <div className='powered-by-deriv' style={{ marginLeft: '12px', marginRight: '12px' }}>
+                    <img src='/assets/poweredbyderiv.png' alt='Powered by Deriv' style={{ height: '24px' }} />
                 </div>
                 {isDesktop && <MenuItems />}
             </Wrapper>
-            <Wrapper variant='right'>
-                <div className='deposit-withdraw-btn'>
-                    {isDesktop && (
-                        <Button
-                            className='deposit-button-small'
-                            primary
-                            onClick={() => (window.location.href = 'https://dm-pay.africa/')}
-                            style={{
-                                backgroundColor: 'green',
-                                color: 'white',
-                                height: '32px',
-                                fontSize: '12px',
-                                padding: '0 12px',
-                            }}
-                        >
-                            Deposit/Withdraw
-                        </Button>
-                    )}
-                </div>
-                {renderAccountSection()}
-            </Wrapper>
+            <Wrapper variant='right'>{renderAccountSection()}</Wrapper>
         </Header>
     );
 });
