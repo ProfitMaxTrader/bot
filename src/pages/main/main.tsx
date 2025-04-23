@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useEffect } from 'react';
+""import React, { lazy, Suspense, useEffect } from 'react';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -18,6 +18,10 @@ import {
     LabelPairedChartLineCaptionRegularIcon,
     LabelPairedObjectsColumnCaptionRegularIcon,
     LabelPairedPuzzlePieceTwoCaptionBoldIcon,
+    LabelPairedBarChart3CaptionBoldIcon,
+    LabelPairedWrenchCaptionBoldIcon,
+    LabelPairedRobotFaceCaptionBoldIcon,
+    LabelPairedCandlestickChartCaptionBoldIcon,
 } from '@deriv/quill-icons/LabelPaired';
 import { LegacyGuide1pxIcon } from '@deriv/quill-icons/Legacy';
 import { Localize, localize } from '@deriv-com/translations';
@@ -98,7 +102,6 @@ const AppWrapper = observer(() => {
         if (active_tour !== '') {
             setActiveTour('');
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [active_tab]);
 
     React.useEffect(() => {
@@ -116,16 +119,13 @@ const AppWrapper = observer(() => {
         }, 100);
 
         return () => {
-            clearTimeout(trashcan_init_id); // Clear the timeout on unmount
+            clearTimeout(trashcan_init_id);
         };
-        //eslint-disable-next-line react-hooks/exhaustive-deps
     }, [active_tab, is_drawer_open]);
 
     useEffect(() => {
         let timer: ReturnType<typeof setTimeout>;
         if (dashboard_strategies.length > 0) {
-            // Needed to pass this to the Callback Queue as on tab changes
-            // document title getting override by 'Bot | Deriv' only
             timer = setTimeout(() => {
                 updateWorkspaceName();
             });
@@ -146,7 +146,6 @@ const AppWrapper = observer(() => {
                 }, 10);
             }
         },
-        // eslint-disable-next-line react-hooks/exhaustive-deps
         [active_tab]
     );
 
@@ -168,11 +167,7 @@ const AppWrapper = observer(() => {
                         <div
                             label={
                                 <>
-                                    <LabelPairedObjectsColumnCaptionRegularIcon
-                                        height='24px'
-                                        width='24px'
-                                        fill='var(--text-general)'
-                                    />
+                                    <LabelPairedObjectsColumnCaptionRegularIcon height='24px' width='24px' fill='var(--text-general)' />
                                     <Localize i18n_default_text='Dashboard' />
                                 </>
                             }
@@ -180,65 +175,98 @@ const AppWrapper = observer(() => {
                         >
                             <Dashboard handleTabChange={handleTabChange} />
                         </div>
+
                         <div
                             label={
                                 <>
-                                    <LabelPairedPuzzlePieceTwoCaptionBoldIcon
-                                        height='24px'
-                                        width='24px'
-                                        fill='var(--text-general)'
-                                    />
+                                    <LabelPairedPuzzlePieceTwoCaptionBoldIcon height='24px' width='24px' fill='var(--text-general)' />
                                     <Localize i18n_default_text='Bot Builder' />
                                 </>
                             }
                             id='id-bot-builder'
                         />
+
                         <div
                             label={
                                 <>
-                                    <LabelPairedChartLineCaptionRegularIcon
-                                        height='24px'
-                                        width='24px'
-                                        fill='var(--text-general)'
-                                    />
+                                    <LabelPairedChartLineCaptionRegularIcon height='24px' width='24px' fill='var(--text-general)' />
                                     <Localize i18n_default_text='Charts' />
                                 </>
                             }
-                            id={
-                                is_chart_modal_visible || is_trading_view_modal_visible
-                                    ? 'id-charts--disabled'
-                                    : 'id-charts'
-                            }
+                            id={is_chart_modal_visible || is_trading_view_modal_visible ? 'id-charts--disabled' : 'id-charts'}
                         >
                             <Suspense fallback={<ChunkLoader message={localize('Please wait, loading chart...')} />}>
                                 <ChartWrapper show_digits_stats={false} />
                             </Suspense>
                         </div>
+
                         <div
                             label={
                                 <>
-                                    <LegacyGuide1pxIcon
-                                        height='16px'
-                                        width='16px'
-                                        fill='var(--text-general)'
-                                        className='icon-general-fill-g-path'
-                                    />
+                                    <LegacyGuide1pxIcon height='16px' width='16px' fill='var(--text-general)' className='icon-general-fill-g-path' />
                                     <Localize i18n_default_text='Tutorials' />
                                 </>
                             }
                             id='id-tutorials'
                         >
                             <div className='tutorials-wrapper'>
-                                <Suspense
-                                    fallback={<ChunkLoader message={localize('Please wait, loading tutorials...')} />}
-                                >
+                                <Suspense fallback={<ChunkLoader message={localize('Please wait, loading tutorials...')} />}>
                                     <Tutorial handleTabChange={handleTabChange} />
                                 </Suspense>
                             </div>
                         </div>
+
+                        <div
+                            label={
+                                <>
+                                    <LabelPairedBarChart3CaptionBoldIcon height='24px' width='24px' fill='var(--text-general)' />
+                                    <Localize i18n_default_text='Analysis Tool' />
+                                </>
+                            }
+                            id='id-analysis-tool'
+                        >
+                            <div style={{ padding: '2rem' }}>📊 Analysis Tool Content</div>
+                        </div>
+
+                        <div
+                            label={
+                                <>
+                                    <LabelPairedWrenchCaptionBoldIcon height='24px' width='24px' fill='var(--text-general)' />
+                                    <Localize i18n_default_text='PM Tool' />
+                                </>
+                            }
+                            id='id-pm-tool'
+                        >
+                            <div style={{ padding: '2rem' }}>🛠️ PM Tool Content</div>
+                        </div>
+
+                        <div
+                            label={
+                                <>
+                                    <LabelPairedRobotFaceCaptionBoldIcon height='24px' width='24px' fill='var(--text-general)' />
+                                    <Localize i18n_default_text='Free Bots' />
+                                </>
+                            }
+                            id='id-free-bots'
+                        >
+                            <div style={{ padding: '2rem' }}>🤖 Free Bots Content</div>
+                        </div>
+
+                        <div
+                            label={
+                                <>
+                                    <LabelPairedCandlestickChartCaptionBoldIcon height='24px' width='24px' fill='var(--text-general)' />
+                                    <Localize i18n_default_text='Trading View' />
+                                </>
+                            }
+                            id='id-trading-view'
+                        >
+                            <div style={{ padding: '2rem' }}>📈 Trading View Content</div>
+                        </div>
                     </Tabs>
                 </div>
             </div>
+
             <DesktopWrapper>
                 <div className='main__run-strategy-wrapper'>
                     <RunStrategy />
@@ -247,7 +275,9 @@ const AppWrapper = observer(() => {
                 <ChartModal />
                 <TradingViewModal />
             </DesktopWrapper>
+
             <MobileWrapper>{!is_open && <RunPanel />}</MobileWrapper>
+
             <Dialog
                 cancel_button_text={cancel_button_text || localize('Cancel')}
                 className='dc-dialog__wrapper--fixed'
