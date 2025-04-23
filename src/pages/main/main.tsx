@@ -18,10 +18,10 @@ import {
     LabelPairedChartLineCaptionRegularIcon,
     LabelPairedObjectsColumnCaptionRegularIcon,
     LabelPairedPuzzlePieceTwoCaptionBoldIcon,
-    LabelPairedBarChart3CaptionBoldIcon,
-    LabelPairedWrenchCaptionBoldIcon,
-    LabelPairedRobotFaceCaptionBoldIcon,
-    LabelPairedCandlestickChartCaptionBoldIcon,
+    LabelPairedChartBarVerticalCaptionBoldIcon,
+    LabelPairedWrenchCaptionRegularIcon,
+    LabelPairedRobotFaceCaptionRegularIcon,
+    LabelPairedChartCandlestickCaptionBoldIcon,
 } from '@deriv/quill-icons/LabelPaired';
 import { LegacyGuide1pxIcon } from '@deriv/quill-icons/Legacy';
 import { Localize, localize } from '@deriv-com/translations';
@@ -75,7 +75,7 @@ const AppWrapper = observer(() => {
     };
     const active_hash_tab = GetHashedValue(active_tab);
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (connectionStatus !== CONNECTION_STATUS.OPENED) {
             const is_bot_running = document.getElementById('db-animation__stop-button') !== null;
             if (is_bot_running) {
@@ -87,11 +87,8 @@ const AppWrapper = observer(() => {
         }
     }, [clear, connectionStatus, setWebSocketState, stopBot]);
 
-    React.useEffect(() => {
-        if (is_open) {
-            setTourDialogVisibility(false);
-        }
-
+    useEffect(() => {
+        if (is_open) setTourDialogVisibility(false);
         if (init_render.current) {
             setActiveTab(Number(active_hash_tab));
             if (!isDesktop) handleTabChange(Number(active_hash_tab));
@@ -99,36 +96,26 @@ const AppWrapper = observer(() => {
         } else {
             navigate(`#${hash[active_tab] || hash[0]}`);
         }
-        if (active_tour !== '') {
-            setActiveTour('');
-        }
+        if (active_tour !== '') setActiveTour('');
     }, [active_tab]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         const trashcan_init_id = setTimeout(() => {
             if (active_tab === BOT_BUILDER && Blockly?.derivWorkspace?.trashcan) {
                 const trashcanY = window.innerHeight - 250;
-                let trashcanX;
-                if (is_drawer_open) {
-                    trashcanX = isDbotRTL() ? 380 : window.innerWidth - 460;
-                } else {
-                    trashcanX = isDbotRTL() ? 20 : window.innerWidth - 100;
-                }
+                let trashcanX = is_drawer_open
+                    ? isDbotRTL() ? 380 : window.innerWidth - 460
+                    : isDbotRTL() ? 20 : window.innerWidth - 100;
                 Blockly?.derivWorkspace?.trashcan?.setTrashcanPosition(trashcanX, trashcanY);
             }
         }, 100);
-
-        return () => {
-            clearTimeout(trashcan_init_id);
-        };
+        return () => clearTimeout(trashcan_init_id);
     }, [active_tab, is_drawer_open]);
 
     useEffect(() => {
         let timer: ReturnType<typeof setTimeout>;
         if (dashboard_strategies.length > 0) {
-            timer = setTimeout(() => {
-                updateWorkspaceName();
-            });
+            timer = setTimeout(() => updateWorkspaceName());
         }
         return () => {
             if (timer) clearTimeout(timer);
@@ -152,57 +139,39 @@ const AppWrapper = observer(() => {
     return (
         <React.Fragment>
             <div className='main'>
-                <div
-                    className={classNames('main__container', {
-                        'main__container--active': active_tour && active_tab === DASHBOARD && !isDesktop,
-                    })}
-                >
-                    <Tabs
-                        active_index={active_tab}
-                        className='main__tabs'
-                        onTabItemChange={onEntered}
-                        onTabItemClick={handleTabChange}
-                        top
-                    >
+                <div className={classNames('main__container', { 'main__container--active': active_tour && active_tab === DASHBOARD && !isDesktop })}>
+                    <Tabs active_index={active_tab} className='main__tabs' onTabItemChange={onEntered} onTabItemClick={handleTabChange} top>
                         <div label={<><LabelPairedObjectsColumnCaptionRegularIcon height='24px' width='24px' /><Localize i18n_default_text='Dashboard' /></>} id='id-dbot-dashboard'>
                             <Dashboard handleTabChange={handleTabChange} />
                         </div>
-
                         <div label={<><LabelPairedPuzzlePieceTwoCaptionBoldIcon height='24px' width='24px' /><Localize i18n_default_text='Bot Builder' /></>} id='id-bot-builder'>
                             <div style={{ padding: '2rem' }}>🧩 Bot Builder Content</div>
                         </div>
-
                         <div label={<><LabelPairedChartLineCaptionRegularIcon height='24px' width='24px' /><Localize i18n_default_text='Charts' /></>} id='id-charts'>
                             <Suspense fallback={<ChunkLoader message={localize('Please wait, loading chart...')} />}>
                                 <ChartWrapper show_digits_stats={false} />
                             </Suspense>
                         </div>
-
                         <div label={<><LegacyGuide1pxIcon height='16px' width='16px' /><Localize i18n_default_text='Tutorials' /></>} id='id-tutorials'>
                             <Suspense fallback={<ChunkLoader message={localize('Please wait, loading tutorials...')} />}>
                                 <Tutorial handleTabChange={handleTabChange} />
                             </Suspense>
                         </div>
-
-                        <div label={<><LabelPairedBarChart3CaptionBoldIcon height='24px' width='24px' /><Localize i18n_default_text='Analysis Tool' /></>} id='id-analysis-tool'>
+                        <div label={<><LabelPairedChartBarVerticalCaptionBoldIcon height='24px' width='24px' /><Localize i18n_default_text='Analysis Tool' /></>} id='id-analysis-tool'>
                             <div style={{ padding: '2rem' }}>📊 Analysis Tool Content</div>
                         </div>
-
-                        <div label={<><LabelPairedWrenchCaptionBoldIcon height='24px' width='24px' /><Localize i18n_default_text='PM Tool' /></>} id='id-pm-tool'>
+                        <div label={<><LabelPairedWrenchCaptionRegularIcon height='24px' width='24px' /><Localize i18n_default_text='PM Tool' /></>} id='id-pm-tool'>
                             <div style={{ padding: '2rem' }}>🛠️ PM Tool Content</div>
                         </div>
-
-                        <div label={<><LabelPairedRobotFaceCaptionBoldIcon height='24px' width='24px' /><Localize i18n_default_text='Free Bots' /></>} id='id-free-bots'>
+                        <div label={<><LabelPairedRobotFaceCaptionRegularIcon height='24px' width='24px' /><Localize i18n_default_text='Free Bots' /></>} id='id-free-bots'>
                             <div style={{ padding: '2rem' }}>🤖 Free Bots Content</div>
                         </div>
-
-                        <div label={<><LabelPairedCandlestickChartCaptionBoldIcon height='24px' width='24px' /><Localize i18n_default_text='Trading View' /></>} id='id-trading-view'>
+                        <div label={<><LabelPairedChartCandlestickCaptionBoldIcon height='24px' width='24px' /><Localize i18n_default_text='Trading View' /></>} id='id-trading-view'>
                             <div style={{ padding: '2rem' }}>📈 Trading View Content</div>
                         </div>
                     </Tabs>
                 </div>
             </div>
-
             <DesktopWrapper>
                 <div className='main__run-strategy-wrapper'>
                     <RunStrategy />
@@ -211,20 +180,8 @@ const AppWrapper = observer(() => {
                 <ChartModal />
                 <TradingViewModal />
             </DesktopWrapper>
-
             <MobileWrapper>{!is_open && <RunPanel />}</MobileWrapper>
-
-            <Dialog
-                cancel_button_text={cancel_button_text || localize('Cancel')}
-                confirm_button_text={ok_button_text || localize('Ok')}
-                has_close_icon
-                is_visible={is_dialog_open}
-                onCancel={onCancelButtonClick}
-                onClose={onCloseDialog}
-                onConfirm={onOkButtonClick || onCloseDialog}
-                portal_element_id='modal_root'
-                title={title}
-            >
+            <Dialog cancel_button_text={cancel_button_text || localize('Cancel')} confirm_button_text={ok_button_text || localize('Ok')} has_close_icon is_visible={is_dialog_open} onCancel={onCancelButtonClick} onClose={onCloseDialog} onConfirm={onOkButtonClick || onCloseDialog} portal_element_id='modal_root' title={title}>
                 {message}
             </Dialog>
         </React.Fragment>
