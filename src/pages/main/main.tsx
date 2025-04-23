@@ -14,16 +14,6 @@ import { CONNECTION_STATUS } from '@/external/bot-skeleton/services/api/observab
 import { isDbotRTL } from '@/external/bot-skeleton/utils/workspace';
 import { useApiBase } from '@/hooks/useApiBase';
 import { useStore } from '@/hooks/useStore';
-import {
-  LabelPairedChartLineCaptionRegularIcon,
-  LabelPairedObjectsColumnCaptionRegularIcon,
-  LabelPairedPuzzlePieceTwoCaptionBoldIcon,
-  LabelPairedPieChartCaptionBoldIcon,
-  LabelPairedToolboxCaptionBoldIcon,
-  LabelPairedRobotFaceCaptionBoldIcon,
-  LabelPairedBarChartCaptionBoldIcon,
-} from '@deriv/quill-icons/LabelPaired';
-import { LegacyGuide1pxIcon } from '@deriv/quill-icons/Legacy';
 import { Localize, localize } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
 import RunPanel from '../../components/run-panel';
@@ -146,32 +136,32 @@ const AppWrapper = observer(() => {
       <div className='main'>
         <div className={classNames('main__container', { 'main__container--active': active_tour && active_tab === DASHBOARD && !isDesktop })}>
           <Tabs active_index={active_tab} className='main__tabs' onTabItemChange={onEntered} onTabItemClick={handleTabChange} top>
-            <div label={<><LabelPairedObjectsColumnCaptionRegularIcon height='24px' width='24px' /><Localize i18n_default_text='Dashboard' /></>} id='id-dbot-dashboard'>
+            <div label={<Localize i18n_default_text='Dashboard' />} id='id-dbot-dashboard'>
               <Dashboard handleTabChange={handleTabChange} />
             </div>
-            <div label={<><LabelPairedPuzzlePieceTwoCaptionBoldIcon height='24px' width='24px' /><Localize i18n_default_text='Bot Builder' /></>} id='id-bot-builder'>
+            <div label={<Localize i18n_default_text='Bot Builder' />} id='id-bot-builder'>
               <div style={{ padding: '2rem' }}>🧩 Bot Builder Content</div>
             </div>
-            <div label={<><LabelPairedChartLineCaptionRegularIcon height='24px' width='24px' /><Localize i18n_default_text='Charts' /></>} id='id-charts'>
+            <div label={<Localize i18n_default_text='Charts' />} id='id-charts'>
               <Suspense fallback={<ChunkLoader message={localize('Please wait, loading chart...')} />}>
                 <ChartWrapper show_digits_stats={false} />
               </Suspense>
             </div>
-            <div label={<><LegacyGuide1pxIcon height='16px' width='16px' /><Localize i18n_default_text='Tutorials' /></>} id='id-tutorials'>
+            <div label={<Localize i18n_default_text='Tutorials' />} id='id-tutorials'>
               <Suspense fallback={<ChunkLoader message={localize('Please wait, loading tutorials...')} />}>
                 <Tutorial handleTabChange={handleTabChange} />
               </Suspense>
             </div>
-            <div label={<><LabelPairedBarChartCaptionBoldIcon height='24px' width='24px' /><Localize i18n_default_text='Analysis Tool' /></>} id='id-analysis-tool'>
+            <div label={<Localize i18n_default_text='Analysis Tool' />} id='id-analysis-tool'>
               <div style={{ padding: '2rem' }}>📊 Analysis Tool Content</div>
             </div>
-            <div label={<><LabelPairedToolboxCaptionBoldIcon height='24px' width='24px' /><Localize i18n_default_text='PM Tool' /></>} id='id-pm-tool'>
+            <div label={<Localize i18n_default_text='PM Tool' />} id='id-pm-tool'>
               <div style={{ padding: '2rem' }}>🛠️ PM Tool Content</div>
             </div>
-            <div label={<><LabelPairedRobotFaceCaptionBoldIcon height='24px' width='24px' /><Localize i18n_default_text='Free Bots' /></>} id='id-free-bots'>
+            <div label={<Localize i18n_default_text='Free Bots' />} id='id-free-bots'>
               <div style={{ padding: '2rem' }}>🤖 Free Bots Content</div>
             </div>
-            <div label={<><LabelPairedChartLineCaptionRegularIcon height='24px' width='24px' /><Localize i18n_default_text='Trading View' /></>} id='id-trading-view'>
+            <div label={<Localize i18n_default_text='Trading View' />} id='id-trading-view'>
               <div style={{ padding: '2rem' }}>📈 Trading View Content</div>
             </div>
           </Tabs>
