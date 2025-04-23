@@ -16,9 +16,16 @@ import './app-root.scss';
 const Layout = lazy(() => import('../components/layout'));
 const AppRoot = lazy(() => import('./app-root'));
 
+// App details from your environment
 const { TRANSLATIONS_CDN_URL, R2_PROJECT_NAME, CROWDIN_BRANCH_NAME } = process.env;
+
+const cdnUrl =
+    TRANSLATIONS_CDN_URL && R2_PROJECT_NAME && CROWDIN_BRANCH_NAME
+        ? `${TRANSLATIONS_CDN_URL}/${R2_PROJECT_NAME}/${CROWDIN_BRANCH_NAME}`
+        : 'https://cdn.deriv.com/translations/deriv-app/master'; // fallback
+
 const i18nInstance = initializeI18n({
-    cdnUrl: `${TRANSLATIONS_CDN_URL}/${R2_PROJECT_NAME}/${CROWDIN_BRANCH_NAME}`,
+    cdnUrl,
 });
 
 const router = createBrowserRouter(
@@ -40,7 +47,6 @@ const router = createBrowserRouter(
                 </Suspense>
             }
         >
-            {/* All child routes will be passed as children to Layout */}
             <Route index element={<AppRoot />} />
             <Route path='endpoint' element={<Endpoint />} />
             <Route path='callback' element={<CallbackPage />} />
@@ -54,7 +60,6 @@ function App() {
         window?.dataLayer?.push({ event: 'page_load' });
 
         return () => {
-            // Clean up the invalid token handler when the component unmounts
             const survicate_box = document.getElementById('survicate-box');
             if (survicate_box) {
                 survicate_box.style.display = 'none';
@@ -73,11 +78,8 @@ function App() {
         const active_loginid = acct1 || acct2;
 
         if (active_token && active_loginid) {
-            // Store the token and login id in localStorage
             localStorage.setItem('authToken', active_token);
             localStorage.setItem('active_loginid', active_loginid);
-
-            // Optional: Clean URL to remove token parameters
             window.history.replaceState({}, document.title, window.location.pathname);
         }
 
@@ -97,7 +99,6 @@ function App() {
 
             if (acct1?.toUpperCase() === 'DEMO') {
                 const demo_account = Object.entries(parsed_accounts).find(([key]) => key.startsWith('VR'));
-
                 if (demo_account) {
                     const [loginid, token] = demo_account;
                     updateLocalStorage(String(token), loginid);
@@ -110,7 +111,6 @@ function App() {
                     ([loginid, account]) =>
                         !loginid.startsWith('VR') && account.currency.toUpperCase() === acct1?.toUpperCase()
                 );
-
                 if (real_account) {
                     const [loginid, account] = real_account;
                     if ('token' in account) {
@@ -120,23 +120,19 @@ function App() {
                 }
             }
         } catch (e) {
-            console.warn('Error', e); // eslint-disable-line no-console
+            console.warn('Error', e);
         }
     }, []);
 
     React.useEffect(() => {
         const token = localStorage.getItem('authToken');
-
         if (token) {
-            // Initialize WebSocket connection with the token
-            const app_id = process.env.REACT_APP_DERIV_APP_ID; // Set your app ID here
+            const app_id = process.env.REACT_APP_DERIV_APP_ID || '71895';
             const wsUrl = `wss://ws.binaryws.com/websockets/v3?app_id=${app_id}&token=${token}`;
-
             const socket = new WebSocket(wsUrl);
 
             socket.onopen = () => {
                 console.log('WebSocket connection established.');
-                // You can start sending WebSocket messages here
                 socket.send(
                     JSON.stringify({
                         msg_type: 'authorize',
@@ -150,7 +146,6 @@ function App() {
             socket.onmessage = (event) => {
                 const data = JSON.parse(event.data);
                 console.log('Received data:', data);
-                // Handle the data from Deriv WebSocket API
             };
 
             socket.onerror = (error) => {
