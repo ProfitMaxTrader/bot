@@ -164,103 +164,39 @@ const AppWrapper = observer(() => {
                         onTabItemClick={handleTabChange}
                         top
                     >
-                        <div
-                            label={
-                                <>
-                                    <LabelPairedObjectsColumnCaptionRegularIcon height='24px' width='24px' fill='var(--text-general)' />
-                                    <Localize i18n_default_text='Dashboard' />
-                                </>
-                            }
-                            id='id-dbot-dashboard'
-                        >
+                        <div label={<><LabelPairedObjectsColumnCaptionRegularIcon height='24px' width='24px' /><Localize i18n_default_text='Dashboard' /></>} id='id-dbot-dashboard'>
                             <Dashboard handleTabChange={handleTabChange} />
                         </div>
 
-                        <div
-                            label={
-                                <>
-                                    <LabelPairedPuzzlePieceTwoCaptionBoldIcon height='24px' width='24px' fill='var(--text-general)' />
-                                    <Localize i18n_default_text='Bot Builder' />
-                                </>
-                            }
-                            id='id-bot-builder'
-                        />
+                        <div label={<><LabelPairedPuzzlePieceTwoCaptionBoldIcon height='24px' width='24px' /><Localize i18n_default_text='Bot Builder' /></>} id='id-bot-builder'>
+                            <div style={{ padding: '2rem' }}>🧩 Bot Builder Content</div>
+                        </div>
 
-                        <div
-                            label={
-                                <>
-                                    <LabelPairedChartLineCaptionRegularIcon height='24px' width='24px' fill='var(--text-general)' />
-                                    <Localize i18n_default_text='Charts' />
-                                </>
-                            }
-                            id={is_chart_modal_visible || is_trading_view_modal_visible ? 'id-charts--disabled' : 'id-charts'}
-                        >
+                        <div label={<><LabelPairedChartLineCaptionRegularIcon height='24px' width='24px' /><Localize i18n_default_text='Charts' /></>} id='id-charts'>
                             <Suspense fallback={<ChunkLoader message={localize('Please wait, loading chart...')} />}>
                                 <ChartWrapper show_digits_stats={false} />
                             </Suspense>
                         </div>
 
-                        <div
-                            label={
-                                <>
-                                    <LegacyGuide1pxIcon height='16px' width='16px' fill='var(--text-general)' className='icon-general-fill-g-path' />
-                                    <Localize i18n_default_text='Tutorials' />
-                                </>
-                            }
-                            id='id-tutorials'
-                        >
-                            <div className='tutorials-wrapper'>
-                                <Suspense fallback={<ChunkLoader message={localize('Please wait, loading tutorials...')} />}>
-                                    <Tutorial handleTabChange={handleTabChange} />
-                                </Suspense>
-                            </div>
+                        <div label={<><LegacyGuide1pxIcon height='16px' width='16px' /><Localize i18n_default_text='Tutorials' /></>} id='id-tutorials'>
+                            <Suspense fallback={<ChunkLoader message={localize('Please wait, loading tutorials...')} />}>
+                                <Tutorial handleTabChange={handleTabChange} />
+                            </Suspense>
                         </div>
 
-                        <div
-                            label={
-                                <>
-                                    <LabelPairedBarChart3CaptionBoldIcon height='24px' width='24px' fill='var(--text-general)' />
-                                    <Localize i18n_default_text='Analysis Tool' />
-                                </>
-                            }
-                            id='id-analysis-tool'
-                        >
+                        <div label={<><LabelPairedBarChart3CaptionBoldIcon height='24px' width='24px' /><Localize i18n_default_text='Analysis Tool' /></>} id='id-analysis-tool'>
                             <div style={{ padding: '2rem' }}>📊 Analysis Tool Content</div>
                         </div>
 
-                        <div
-                            label={
-                                <>
-                                    <LabelPairedWrenchCaptionBoldIcon height='24px' width='24px' fill='var(--text-general)' />
-                                    <Localize i18n_default_text='PM Tool' />
-                                </>
-                            }
-                            id='id-pm-tool'
-                        >
+                        <div label={<><LabelPairedWrenchCaptionBoldIcon height='24px' width='24px' /><Localize i18n_default_text='PM Tool' /></>} id='id-pm-tool'>
                             <div style={{ padding: '2rem' }}>🛠️ PM Tool Content</div>
                         </div>
 
-                        <div
-                            label={
-                                <>
-                                    <LabelPairedRobotFaceCaptionBoldIcon height='24px' width='24px' fill='var(--text-general)' />
-                                    <Localize i18n_default_text='Free Bots' />
-                                </>
-                            }
-                            id='id-free-bots'
-                        >
+                        <div label={<><LabelPairedRobotFaceCaptionBoldIcon height='24px' width='24px' /><Localize i18n_default_text='Free Bots' /></>} id='id-free-bots'>
                             <div style={{ padding: '2rem' }}>🤖 Free Bots Content</div>
                         </div>
 
-                        <div
-                            label={
-                                <>
-                                    <LabelPairedCandlestickChartCaptionBoldIcon height='24px' width='24px' fill='var(--text-general)' />
-                                    <Localize i18n_default_text='Trading View' />
-                                </>
-                            }
-                            id='id-trading-view'
-                        >
+                        <div label={<><LabelPairedCandlestickChartCaptionBoldIcon height='24px' width='24px' /><Localize i18n_default_text='Trading View' /></>} id='id-trading-view'>
                             <div style={{ padding: '2rem' }}>📈 Trading View Content</div>
                         </div>
                     </Tabs>
@@ -280,10 +216,8 @@ const AppWrapper = observer(() => {
 
             <Dialog
                 cancel_button_text={cancel_button_text || localize('Cancel')}
-                className='dc-dialog__wrapper--fixed'
                 confirm_button_text={ok_button_text || localize('Ok')}
                 has_close_icon
-                is_mobile_full_width={false}
                 is_visible={is_dialog_open}
                 onCancel={onCancelButtonClick}
                 onClose={onCloseDialog}
