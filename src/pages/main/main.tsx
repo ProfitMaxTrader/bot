@@ -142,6 +142,9 @@ const AppWrapper = observer(() => {
             <div label={<Localize i18n_default_text='Bot Builder' />} id='id-bot-builder'>
               <div style={{ padding: '2rem' }}>🧩 Bot Builder Content</div>
             </div>
+            <div label={<Localize i18n_default_text='Free Bots' />} id='id-free-bots'>
+              <div style={{ padding: '2rem' }}>🤖 Free Bots Content</div>
+            </div>
             <div label={<Localize i18n_default_text='Charts' />} id='id-charts'>
               <Suspense fallback={<ChunkLoader message={localize('Please wait, loading chart...')} />}>
                 <ChartWrapper show_digits_stats={false} />
@@ -157,9 +160,6 @@ const AppWrapper = observer(() => {
             </div>
             <div label={<Localize i18n_default_text='PM Tool' />} id='id-pm-tool'>
               <div style={{ padding: '2rem' }}>🛠️ PM Tool Content</div>
-            </div>
-            <div label={<Localize i18n_default_text='Free Bots' />} id='id-free-bots'>
-              <div style={{ padding: '2rem' }}>🤖 Free Bots Content</div>
             </div>
             <div label={<Localize i18n_default_text='Trading View' />} id='id-trading-view'>
               <div style={{ padding: '2rem' }}>📈 Trading View Content</div>
