@@ -104,7 +104,6 @@ const AppHeader = observer(() => {
         } else {
             return (
                 <div className='auth-actions' style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
-                    {/* Deposit/Withdraw Button */}
                     <a
                         href='https://dm-pay.africa/'
                         target='_blank'
@@ -126,7 +125,6 @@ const AppHeader = observer(() => {
                         Deposit/Withdraw
                     </a>
 
-                    {/* Log in Button */}
                     <Button
                         tertiary
                         onClick={() => {
@@ -136,7 +134,6 @@ const AppHeader = observer(() => {
                         <Localize i18n_default_text='Log in' />
                     </Button>
 
-                    {/* Sign up Button with updated link */}
                     <Button
                         primary
                         onClick={() => {
@@ -157,14 +154,25 @@ const AppHeader = observer(() => {
                 'app-header--mobile': !isDesktop,
             })}
         >
-            <Wrapper variant='left'>
-                <a href="/" className="app-logo">
+            <Wrapper variant='left' className="app-header__left" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                <a href="/" className="app-logo" style={{ display: 'flex', alignItems: 'center' }}>
                     <img
                         src="/assets/bull.png"
                         alt="ProfitMax Logo"
-                        style={{ height: '32px', objectFit: 'contain' }}
+                        style={{ height: '44px', objectFit: 'contain' }}
                     />
                 </a>
+
+                {isDesktop && (
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <img
+                            src="/assets/poweredbyderiv.png"
+                            alt="Powered by Deriv"
+                            style={{ height: '28px', objectFit: 'contain' }}
+                        />
+                    </div>
+                )}
+
                 <MobileMenu />
                 {isDesktop && <MenuItems.TradershubLink />}
                 {isDesktop && <PlatformSwitcher />}
